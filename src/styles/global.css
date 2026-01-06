@@ -1,0 +1,155 @@
+/* ================= GLOBAL RESET ================= */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Inter", Arial, sans-serif;
+  background: #b6e7ef;
+  overflow: hidden; /*  no page scroll */
+}
+
+
+/* ================= DASHBOARD LAYOUT ================= */
+.dashboard-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  padding: 6px;
+  gap: 6px;
+  box-sizing: border-box;
+}
+/* SIDEBAR */
+.sidebar {
+  width: 18%;
+  min-width: 180px;
+}
+
+/* MAIN AREA */
+.content-area {
+  width: 82%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* BELOW HEADER */
+.content-grid {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  overflow: hidden;
+}
+
+
+/* RIGHT SIDE PANELS */
+.right-widgets {
+  width: 28%;
+  display: flex;
+  gap: 6px;
+  box-sizing: border-box;
+  
+}
+.widget.user-details {
+  width: 66%;
+  height: auto;        /*  important */
+  align-self: flex-start;
+}
+
+.widget.projects-panel {
+  width: 34%;
+}
+
+
+/* ================= COMMON CARD ================= */
+.widget {
+  height: 100%;
+  display: flex;
+  background: #ffffff;
+  flex-direction: column;
+  border: 1px solid #9cc0c9;
+  border-radius: 8px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+/* ================= MODAL ================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+/* ================= BUTTONS ================= */
+.btn {
+  width: 120px;
+  height: 25px;
+  font-size: 9px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn.confirm {
+  background: #234e5a;
+  color: #ffffff;
+}
+
+.btn.cancel {
+  background: #e6e6e6;
+  color: #333333;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* USERS TABLE SCROLL SAFETY */
+.users-card {
+  overflow-x: auto;
+}
+/* USERS TABLE */
+.users-card {
+  width: 60%;
+  padding: 12px;
+}
+
+/* RIGHT SIDE */
+.right-widgets.two-column {
+  width: 40%;
+  display: flex;
+  gap: 10px;
+}
+/* FORCE padding for right panels */
+.widget.user-details,
+.widget.projects-panel {
+
+   height: 100%;
+}
+.widget-inner {
+  padding: 14px;
+  height: 100%;
+  box-sizing: border-box;
+}

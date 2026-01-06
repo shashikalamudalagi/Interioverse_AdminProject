@@ -1,0 +1,133 @@
+/* ================= USER DETAILS ================= */
+
+.user-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+.user-header h4 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.verified-icon {
+  width: 14px;
+  height: 14px;
+  background: #2ccf70;
+  color: #ffffff;
+  font-size: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-role {
+  margin: 0 auto 10px;
+  padding: 3px 20px;
+  font-size: 10px;
+  border: 1px solid #9adfe6;
+  background: #e3f2f7;
+  color: #234e5a;
+  text-align: center;
+}
+
+.user-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 8px;
+  flex-grow: 0;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  padding: 4px 9px;
+  border: 1px solid #e1f1f6;
+  border-radius: 4px;
+  font-size: 9.5px;
+}
+
+.user-details-list .detail-row:nth-child(even) {
+  background: #e8fbff;
+}
+
+.user-details-list .detail-row:nth-child(odd) {
+  background: #ffffff;
+}
+
+.detail-row span {
+  width: 110px;
+  color: #5f7480;
+}
+
+.detail-row b {
+  color: #1f2f35;
+  font-weight: 400;
+}
+
+.social-link {
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+/* ACTION BUTTONS */
+.user-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 6px;       
+  padding-bottom: 0;  
+}
+
+
+
+.no-user {
+  text-align: center;
+  font-size: 12px;
+  color: #777777;
+}
+/* ================= ACTION BUTTONS ================= */
+
+.btn {
+  width: 120px;         
+  height: 25px;
+  font-size: 11px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: none;
+}
+
+
+/* DELETE BUTTON */
+.delete-btn {
+  background-color: #234e5a;
+  color: #ffffff;
+  
+  display: block;
+  margin: 4px auto 4px auto;
+}
+
+
+
+/* DISABLED STATE */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.user-actions {
+  margin-top: 1px;
+  padding-bottom: 4px;
+}
+.widget.user-details {
+  width: 60%;
+  padding: 8px;
+}
+.user-details-list {
+  flex-grow: 0;
+   
+}

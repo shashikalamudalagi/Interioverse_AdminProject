@@ -1,0 +1,52 @@
+/* ================= HEADER ================= */
+
+.top-header {
+  height: 50px;                 /* FIXED & CLEAN */
+  background: #e8f5f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;              /* PROPER SPACING */
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  margin-top: -3px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-page {
+  font-size: 16px;
+  font-weight: 500;
+  color: #495d63;
+  margin-left: 2px;            /* moves “Users” right */
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.logout-btn {
+  font-size: 12px;
+  padding: 4px 10px;
+  background: #234e5a;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  opacity: 0.9;
+}

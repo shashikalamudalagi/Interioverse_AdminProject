@@ -1,0 +1,81 @@
+/* ================= SIDEBAR ================= */
+
+.sidebar {
+  width: 18%;
+  min-width: 180px; 
+  background: #eaf6f8;
+  padding: 14px 12px;
+  box-sizing: border-box;
+  margin-top: -3px;
+}
+
+.sidebar-logo {
+  width: 170px;
+  margin-bottom: 20px;
+}
+
+/* Quick Actions title */
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #5d6f76;
+  margin-bottom: 12px;
+}
+
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 6px;        
+  margin-bottom: 14px;  /* vertical breathing space */
+  font-size: 14px;
+  color: #5d6f76;
+}
+
+/* menu icon */
+.sidebar-menu-icon {
+  font-size: 16px;
+  color: #57686e;
+  cursor: pointer;
+}
+
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 35px;
+  padding: 0 10px;
+  margin-bottom: 8px;
+  background: #ffffff;
+  border: 1px solid #b6d0d6;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #2e3f45;
+  text-decoration: none;
+}
+
+.sidebar-item.active {
+  background: #bfecef;
+  border-color: #9adfe6;
+}
+
+.plus {
+  width: 18px;
+  height: 18px;
+  background: #234e5a;
+  color: #ffffff;
+  font-size: 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

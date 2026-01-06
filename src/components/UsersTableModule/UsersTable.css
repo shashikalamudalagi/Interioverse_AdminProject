@@ -1,0 +1,163 @@
+/* ================= USERS TABLE ================= */
+
+.users-card {
+  width: 72%;
+  background: #ffffff;
+  border: 1px solid #d7edf2;
+  border-radius: 6px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden; /* no horizontal scroll */
+  cursor: pointer;
+}
+
+
+.search-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.search-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.search {
+  width: 92%;
+  height: 32px;
+  padding-left: 38px;
+  font-size: 12px;
+  border-radius: 2px;
+  border: 1px solid #738d93;
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #6b6b6b;
+}
+
+.xyz-btn {
+  height: 32px;
+  padding: 0 18px;
+  background: #234e5a;
+  color: #ffffff;
+  border: none;
+  border-radius: 2px;
+  font-size: 12px;
+}
+
+.filters-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.filters-row button {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1.5px solid #566e74;
+  background: #f9feff;
+}
+
+.filters-row .active {
+  background: #234e5a;
+  color: #ffffff;
+  border-color: #20282a;
+}
+
+/* TABLE */
+.users-table-wrapper table {
+  width: 100%;
+  
+  border-spacing: 0 4px;
+  font-size: 10px;
+}
+
+thead tr {
+  background: #c8f3f8;
+}
+
+thead th {
+  font-size: 11px;
+  padding: 5px 6px;
+  color: #374c52;
+  font-weight: 600;
+  text-align: center;
+}
+
+tbody td {
+  padding: 4px 6px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 1.2;
+  font-size: 9px;
+}
+
+tbody tr:nth-child(even) {
+  background: #e8fbff;
+}
+
+tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+/* PROFILE ID */
+.profile-id-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.profile-avatar {
+  width: 15px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* STATUS */
+.badge {
+  font-size: 9px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  cursor: pointer;
+   white-space: nowrap;
+}
+
+.verified {
+  background: #dff6df;
+  color: #2f8f46;
+}
+
+.pending {
+  background: #eeeeee;
+  color: #666666;
+}
+
+/* DELETE */
+.delete-icon {
+  cursor: pointer;
+  font-size: 12px;
+  color: #12181b;
+}
+
+.delete-icon:hover {
+  color: #c0392b;
+}
+
+.no-users {
+  text-align: center;
+  padding: 12px;
+}
+/* Date */
+.users-table-wrapper th:nth-child(4),
+.users-table-wrapper td:nth-child(4){
+   white-space: nowrap;     /* NO line break */
+}
