@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../redux/authSlice";
+import api from "../../api/axios"; // ✅ axios instance
 import "./Header.css";
 
 function Header() {
@@ -10,9 +11,17 @@ function Header() {
 
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
-  const handleLogoutConfirm = () => {
-    dispatch(logout());
-    navigate("/");
+  const handleLogoutConfirm = async () => {
+    try {
+      // ✅ backend logout (cookie cleared)
+      await api.post("/auth/logout");
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      // ✅ clear frontend state
+      dispatch(logout());
+      navigate("/", { replace: true });
+    }
   };
 
   return (

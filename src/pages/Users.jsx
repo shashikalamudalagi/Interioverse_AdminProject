@@ -1,125 +1,87 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../api/axios"; //  axios instance
+
 import Header from "../components/HeaderModule/Header";
 import Sidebar from "../components/SidebarModule/Sidebar";
 import UsersTable from "../components/UsersTableModule/UsersTable";
 import UserDetails from "../components/UserDetailsModule/UserDetails";
 import ProjectsPanel from "../components/ProjectsPanelModule/ProjectsPanel";
 
-import AuditLog from "../components/AuditLogModule/AuditLog";
-
-import usersData from "../data/users";
-
-
-
-const USERS_KEY = "usersData";
-const SELECTED_USER_KEY = "selectedUserId";
-
 function Users() {
-  // ================= USERS (PERSISTED) =================
-  const [users, setUsers] = useState(() => {
-    const saved = localStorage.getItem(USERS_KEY);
-    return saved ? JSON.parse(saved) : usersData;
-  });
+  const navigate = useNavigate();
 
-  const [selectedUser, setSelectedUser] = useState(() => {
-    const savedUsers = localStorage.getItem(USERS_KEY);
-    const savedId = localStorage.getItem(SELECTED_USER_KEY);
-
-    const list = savedUsers ? JSON.parse(savedUsers) : usersData;
-    return list.find((u) => u.id === savedId) || list[0] || null;
-  });
-
-  // ================= DELETE CONFIRM =================
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [deleteUser, setDeleteUser] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
 
-  // ================= AUDIT LOG =================
-  const [auditLogs, setAuditLogs] = useState([]);
-
-  
-
-  const addAuditLog = (action, user) => {
-    setAuditLogs((prev) => [
-      {
-        id: Date.now(),
-        action,
-        userName: user.name,
-        time: new Date().toLocaleString(),
-      },
-      ...prev,
-    ]);
-  };
-
-  // ================= PERSIST USERS =================
+  // HARD LOCK BACK BUTTON
   useEffect(() => {
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  }, [users]);
+    window.history.pushState(null, "", window.location.href);
 
-  // ================= PERSIST SELECTED USER =================
+    const blockBack = () => {
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.addEventListener("popstate", blockBack);
+    return () => window.removeEventListener("popstate", blockBack);
+  }, []);
+
+  // ADMIN AUTH CHECK + FETCH USERS
   useEffect(() => {
-    if (selectedUser) {
-      localStorage.setItem(SELECTED_USER_KEY, selectedUser.id);
-    }
-  }, [selectedUser]);
-
-  // ================= DELETE =================
-  const requestDelete = (id) => {
-    setDeleteId(id);
-    setShowConfirm(true);
-  };
-
-  const confirmDelete = () => {
-    const user = users.find((u) => u.id === deleteId);
-    if (user) addAuditLog("User Deleted", user);
-
-    const updated = users.filter((u) => u.id !== deleteId);
-    setUsers(updated);
-
-    if (selectedUser?.id === deleteId) {
-      setSelectedUser(updated[0] || null);
-    }
-
-    setShowConfirm(false);
-    setDeleteId(null);
-  };
-
-  const cancelDelete = () => {
-    setShowConfirm(false);
-    setDeleteId(null);
-  };
-
-  // ================= VERIFY / UNVERIFY =================
-  const handleStatusToggle = (id) => {
-    setUsers((prev) =>
-      prev.map((u) => {
-        if (u.id === id) {
-          const newStatus =
-            u.status === "Verified" ? "Not Verified" : "Verified";
-
-          addAuditLog(
-            newStatus === "Verified"
-              ? "User Verified"
-              : "User Unverified",
-            u
-          );
-
-          return { ...u, status: newStatus };
-        }
-        return u;
+    api.get("/admin/users")
+      .then((res) => {
+        setUsers(res.data);
+        setSelectedUser(res.data[0] || null);
       })
-    );
+      .catch(() => {
+        navigate("/", { replace: true });
+      });
+  }, [navigate]);
+
+  // DELETE CONFIRM
+  const confirmDelete = async () => {
+    try {
+      await api.delete(`/admin/delete-user/${deleteUser._id}`);
+
+      setUsers((prevUsers) => {
+        const updatedUsers = prevUsers.filter(
+          (u) => u._id !== deleteUser._id
+        );
+
+        // AUTO SELECT NEXT USER
+        if (updatedUsers.length > 0) {
+          setSelectedUser(updatedUsers[0]);
+        } else {
+          setSelectedUser(null);
+        }
+
+        return updatedUsers;
+      });
+    } catch (err) {
+      console.error("Delete failed", err);
+    } finally {
+      setDeleteUser(null);
+      setShowConfirm(false);
+    }
   };
 
-  // 🔹 NEW: UPDATE USER FROM EDIT POPUP
-  const handleUpdateUser = (updatedUser) => {
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.id === updatedUser.id ? updatedUser : u
-      )
-    );
+  // VERIFY USER
+  const handleVerify = async (id) => {
+    try {
+      const res = await api.put(`/admin/verify-user/${id}`);
 
-    setSelectedUser(updatedUser);
-    addAuditLog("User Updated", updatedUser);
+      const updatedUser = res.data;
+
+      setUsers((prev) =>
+        prev.map((u) => (u._id === updatedUser._id ? updatedUser : u))
+      );
+
+      setSelectedUser(updatedUser);
+    } catch (err) {
+      console.error("Verify failed", err);
+    }
   };
 
   return (
@@ -132,45 +94,54 @@ function Users() {
         <div className="content-grid">
           <UsersTable
             users={users}
-            onSelect={(user) => setSelectedUser(user)}
-            onDelete={requestDelete}
-            onToggleStatus={handleStatusToggle}
+            onSelect={setSelectedUser}
+            onDelete={(user) => {
+              setDeleteUser(user);
+              setShowConfirm(true);
+            }}
+            onToggleStatus={handleVerify}
           />
 
           <div className="right-widgets two-column">
             <UserDetails
               user={selectedUser}
-              onDelete={requestDelete}
-              
+              onDelete={(user) => {
+                setDeleteUser(user);
+                setShowConfirm(true);
+              }}
             />
 
-            {selectedUser && (
+            {selectedUser?.projects && (
               <ProjectsPanel projects={selectedUser.projects} />
             )}
           </div>
         </div>
       </div>
 
-      {/* DELETE CONFIRM POPUP */}
-      {showConfirm && (
+      {/* DELETE CONFIRM MODAL */}
+      {showConfirm && deleteUser && (
         <div className="modal-overlay">
-          <div className="modal-box">
-            <p>Are you sure you want to delete this user?</p>
+          <div className="modal-box delete-modal">
+            <p>
+              Are you sure you want to delete user{" "}
+              <b>{deleteUser.name}</b>?
+            </p>
+
             <div className="modal-actions">
-              <button className="btn cancel" onClick={cancelDelete}>
+              <button
+                className="btn cancel"
+                onClick={() => setShowConfirm(false)}
+              >
                 Cancel
               </button>
+
               <button className="btn confirm" onClick={confirmDelete}>
-                Yes, Delete
+                Delete
               </button>
             </div>
           </div>
         </div>
       )}
-
-
-     
-
     </div>
   );
 }

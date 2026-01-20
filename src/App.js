@@ -1,33 +1,41 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Users from "./pages/Users";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const isAuth = useSelector((state) => state.auth.isAuth);
-
   return (
     <BrowserRouter>
       <Routes>
-        {/* LOGIN PAGE */}
+        {/* PUBLIC LOGIN */}
+        <Route path="/" element={<Login />} />
+
+        {/* USER ONLY – SIGNUP */}
         <Route
-          path="/"
+          path="/signup"
           element={
-            isAuth ? <Navigate to="/users" replace /> : <Login />
+            <ProtectedRoute allowedRole="user">
+              <Signup />
+            </ProtectedRoute>
           }
         />
 
-        {/* PROTECTED USERS PAGE */}
+        {/* ADMIN ONLY – USERS */}
         <Route
           path="/users"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRole="admin">
               <Users />
             </ProtectedRoute>
           }
         />
+
+        {/* This route catches all unknown or invalid URLs and 
+        redirects the user back to the login page */}
+        
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

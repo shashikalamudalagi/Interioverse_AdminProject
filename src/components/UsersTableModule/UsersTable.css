@@ -9,6 +9,7 @@
   box-sizing: border-box;
   overflow: hidden; /* no horizontal scroll */
   cursor: pointer;
+  overflow-y: auto;
 }
 
 
@@ -96,7 +97,7 @@ tbody td {
   text-align: center;
   vertical-align: middle;
   line-height: 1.2;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 tbody tr:nth-child(even) {
@@ -160,4 +161,126 @@ tbody tr:nth-child(odd) {
 .users-table-wrapper th:nth-child(4),
 .users-table-wrapper td:nth-child(4){
    white-space: nowrap;     /* NO line break */
+}
+/* ================= DELETE POPUP – SIDE BY SIDE BUTTONS ================= */
+.modal-box {
+  width: 460px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 30px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  column-gap: 10px;   /* adjust to taste: 6px–12px */
+  row-gap: 2px;
+  column-gap: 10px; 
+}
+
+.modal-box p {
+  grid-column: 1 / -1;
+  font-size: 17px;
+  color: #0d1416;
+  line-height: 1.4;
+}
+
+/* Buttons */
+.modal-box button {
+  width: 75%;
+  height: 32px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+ 
+
+  /* ✅ KEY FIX */
+  justify-self: center;
+}
+
+/* Cancel (left) */
+.modal-box button:last-of-type {
+  background: #b6b2b2;
+  color: #333;
+}
+
+/* Delete (right) */
+.modal-box button:first-of-type {
+  background: #bf3535;
+  color: #ffffff;
+}
+
+.modal-box button:hover {
+  opacity: 0.9;
+}
+/* ================= DELETE POPUP ONLY (SAFE SCOPE) ================= */
+.delete-modal {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  column-gap: 10px;
+}
+
+.delete-modal p {
+  grid-column: 1 / -1;
+}
+
+.delete-modal button {
+  width: 140px;
+  height: 32px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-modal button:first-of-type {
+  background: #bf3535;
+  color: #fff;
+}
+
+.delete-modal button:last-of-type {
+  background: #e6e6e6;
+  color: #333;
+}
+
+
+
+/*verify*/
+/* ================= VERIFY MODAL – RESET GRID COMPLETELY ================= */
+
+.verify-modal {
+  display: block !important;   /* 🔑 remove grid influence */
+}
+
+/* Center buttons properly */
+.verify-modal .modal-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Button size */
+.verify-modal .modal-actions .btn {
+  width: 140px;
+  height: 32px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Cancel */
+.verify-modal .modal-actions .cancel {
+  background: #e6e6e6;
+  color: #333;
+}
+
+/* Confirm */
+.verify-modal .modal-actions .confirm {
+  background: #234e5a;
+  color: #ffffff;
 }

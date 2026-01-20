@@ -1,39 +1,33 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { login } from "../../redux/authSlice";
 import { useNavigate } from "react-router-dom";
+import api from "../../api/axios"; // ✅ axios instance
 import "./LoginCard.css";
 
 function LoginCard() {
-  const [username, setUsername] = useState("shashi");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+  const [error, setError] = useState("");
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const ADMIN_USERNAME = "shashi";
-  const ADMIN_PASSWORD = "4321";
+  const handleLogin = async () => {
+    setError("");
 
-  const handleLogin = () => {
-    const newErrors = {};
-
-    if (!username.trim()) newErrors.username = "Username is required*";
-    if (!password.trim()) newErrors.password = "Password is required*";
-
-    if (
-      username &&
-      password &&
-      (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD)
-    ) {
-      newErrors.common = "Invalid admin credentials";
+    if (!role || !password) {
+      setError("All fields are required");
+      return;
     }
 
-    setErrors(newErrors);
+    try {
+      const res = await api.post("/auth/login", { role, password });
 
-    if (Object.keys(newErrors).length === 0) {
-      dispatch(login());
-      navigate("/users");
+      if (res.data.role === "admin") {
+        navigate("/users", { replace: true });
+      } else {
+        navigate("/signup",{ replace: true });
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -42,40 +36,25 @@ function LoginCard() {
       <h2 className="login-title">Log in to account</h2>
 
       <div className="field">
-        <label>User Name</label>
-        <input
-          type="text"
-          placeholder="Type here"
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-            setErrors((prev) => ({ ...prev, username: "", common: "" }));
-          }}
-        />
-        {errors.username && (
-          <span className="field-error">{errors.username}</span>
-        )}
+        <label>Role</label>
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="">Select Role</option>
+          <option value="admin">Admin</option>
+          <option value="user">User</option>
+        </select>
       </div>
 
       <div className="field">
         <label>Password</label>
         <input
           type="password"
-          placeholder="********"
+          placeholder="Enter password"
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors((prev) => ({ ...prev, password: "", common: "" }));
-          }}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        {errors.password && (
-          <span className="field-error">{errors.password}</span>
-        )}
       </div>
 
-      {errors.common && (
-        <span className="field-error center">{errors.common}</span>
-      )}
+      {error && <span className="field-error center">{error}</span>}
 
       <button className="verify-btn" onClick={handleLogin}>
         Verify

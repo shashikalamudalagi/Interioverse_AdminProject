@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { IoIosSearch } from "react-icons/io";
 import "./UsersTable.css";
@@ -5,7 +6,6 @@ import "./UsersTable.css";
 function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
-
   const [statusPopupUser, setStatusPopupUser] = useState(null);
 
   const displayUsers = useMemo(() => {
@@ -19,7 +19,7 @@ function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
 
     if (filter !== "all") {
       result = result.filter(
-        (u) => u.type.toLowerCase() === filter.toLowerCase()
+        (u) => u.type?.toLowerCase() === filter.toLowerCase()
       );
     }
 
@@ -75,21 +75,27 @@ function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
 
           <tbody>
             {displayUsers.map((u) => (
-              <tr key={u.id} onClick={() => onSelect(u)}>
+              <tr key={u._id} onClick={() => onSelect(u)}>
                 <td className="profile-id-cell">
                   <img
                     src="https://static.vecteezy.com/system/resources/previews/009/749/643/original/woman-profile-mascot-illustration-female-avatar-character-icon-cartoon-girl-head-face-business-user-logo-free-vector.jpg"
                     alt="profile"
                     className="profile-avatar"
                   />
-                  <span className="profile-id-text">{u.id}</span>
+                  <span className="profile-id-text">{u.profileId}</span>
                 </td>
 
                 <td>{u.name}</td>
                 <td>{u.email}</td>
-                <td>{u.date}</td>
+                <td>
+                      {u.createdAt
+                      ? new Date(u.createdAt).toLocaleDateString("en-IN")
+                    : "-"}
+                    </td>
+
                 <td>{u.projectsCount}</td>
 
+                {/* STATUS BADGE */}
                 <td>
                   <span
                     className={`badge ${
@@ -97,19 +103,20 @@ function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
                     }`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setStatusPopupUser(u);
+                      setStatusPopupUser(u); //  ALWAYS clickable
                     }}
                   >
                     {u.status}
                   </span>
                 </td>
 
+                {/* DELETE */}
                 <td>
                   <span
                     className="delete-icon"
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDelete(u.id);
+                      onDelete(u);
                     }}
                   >
                     🗑
@@ -129,18 +136,18 @@ function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
         </table>
       </div>
 
-      {/* STATUS CONFIRM POPUP */}
+      {/* STATUS CONFIRM MODAL */}
       {statusPopupUser && (
         <div className="modal-overlay">
-          <div className="modal-box">
+          <div className="modal-box verify-modal">
             <p>
-              Are you sure you want to mark this user as{" "}
+              Are you sure you want to{" "}
               <b>
                 {statusPopupUser.status === "Verified"
-                  ? "Not Verified"
-                  : "Verified"}
-              </b>
-              ?
+                  ? "Not verify"
+                  : "Verify"}
+              </b>{" "}
+              user <b>{statusPopupUser.name}</b>?
             </p>
 
             <div className="modal-actions">
@@ -154,7 +161,7 @@ function UsersTable({ users, onSelect, onDelete, onToggleStatus }) {
               <button
                 className="btn confirm"
                 onClick={() => {
-                  onToggleStatus(statusPopupUser.id);
+                  onToggleStatus(statusPopupUser._id);
                   setStatusPopupUser(null);
                 }}
               >
