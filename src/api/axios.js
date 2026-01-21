@@ -12,9 +12,9 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:
-    process.env.REACT_APP_API_URL ||
-    "https://interioverse-backend-bpf6.onrender.com/api",
+  // baseURL:
+  //   "http://localhost:5000/api",
+  baseURL:"https://backend-cvfl.onrender.com/",
   withCredentials: true,
 });
 
