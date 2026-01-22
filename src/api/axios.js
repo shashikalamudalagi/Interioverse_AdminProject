@@ -12,7 +12,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://backend-cvfl.onrender.com/api",
+  baseURL: "https://interioverse-backend-ifbz.onrender.com/api",
   withCredentials: true,
 });
 
